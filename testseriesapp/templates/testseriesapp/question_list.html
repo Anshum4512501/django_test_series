@@ -19,45 +19,50 @@
         <div class="row">
             
             <div class="col-md-10">
-                <h3>Question {{object.question_text}}</h3>
+                <h1 class="font-weight-lighter">  {{object.test.test_name}} </h1>
+                <hr>
 
+                <h3>Question {{object.question_text}}</h3>
+                 
                 {% for item in object.choice_set.all %}
-                <div class="row">
-                    <div class="col-md-10 shadow-light p-2 m-2">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                            <input type="radio" class="form-check-input" data-choice="{{item.id}}" data-value="{{ forloop.counter }}" name="choices" id="" value="{{item.choosen_choice}}" >
-                            {{item.choice_text}}
-                          </label>
+                    <div class="row">
+                        <div class="col-md-10 shadow-light p-2 m-2">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                <input type="radio" class="form-check-input" data-question="{{object.id}}" data-choice="{{item.id}}" data-value="{{ forloop.counter }}" name="choices" id="" value="{{item.choosen_choice}}" >
+                                {{item.choice_text}}
+                            </label>
+                            </div>
+                            
                         </div>
-                        
                     </div>
-                </div>
                 
-            {% endfor %}
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
-
-    </form>
-    <div class="pagination mt-4">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1" class="btn btn-primary p-3 rounded-0 update-choices ">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary p-3 update-choices rounded-0 ">previous</a>
-            {% endif %}
+            <div class="pagination mt-4">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <!-- <a href="?page=1" class="btn btn-primary p-1 rounded-0 update-choices ">&laquo; first</a> -->
+                        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary p-1 update-choices rounded-0 ">previous</a>
+                    {% endif %}
+            
+                
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary p-1 rounded-0 update-choices">next</a>
+                        <!-- <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-primary p-1 rounded-0 update-choices ">last &raquo;</a> -->
+                    {% endif %}
+                    <a href="{% url 'testseriesapp:test-result' pk=object.test.id %}" class="btn btn-primary p-1 update-choices rounded-0  ">Submit</a>
+            
+                </span>
+        </div>
+       
+            {% endfor %}
+       
+        
+  </form>
+  
     
-         <!-- ?page={{ page_obj.previous_page_number }} -->
-    
-         <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary p-3 rounded-0 update-choices">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}"class="btn btn-primary p-3 rounded-0 update-choices " >last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
 </div>
 
 {% endblock %}

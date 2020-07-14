@@ -25,22 +25,23 @@ for(var i=0;i<choice_buttons.length;i++){
   }
   choice_buttons[i].addEventListener("click", function(){
       
-      console.log(this.dataset.choice);
-      console.log(this.dataset.value);
+      console.log("Choice Id",this.dataset.choice);
+      console.log("Question Id",this.dataset.question);
+      console.log( "Value", this.dataset.value);
 
       if(user==='Anonymoususer'){
           console.log("Not authenticated yet");
       }
       else{
         console.log("User",user);
-        update_choice(this.dataset.choice,this.dataset.value);
+        update_choice(this.dataset.question,this.dataset.choice,this.dataset.value);
       }
     });
 }
 
 
 
-function update_choice(choice_id,value){
+function update_choice(question_id,choice_id,value){
   console.log("Update choice function called")
     fetch(url, {
         method: 'POST', 
@@ -49,7 +50,7 @@ function update_choice(choice_id,value){
           'X-CSRFToken':csrftoken,
         },
        
-        body: JSON.stringify({'choice_id':choice_id,'value':value}) 
+        body: JSON.stringify({'question_id':question_id,'choice_id':choice_id,'value':value}) 
       }).then(response => response.json())
       .then(data => {
         console.log('Success:', data);

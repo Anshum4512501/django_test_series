@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+{% include 'nav-bar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 shadow-sm p-3 m-3 ">
+            <span class="current">
+                <h3>
+                    Test Result for {{test}}
+                </h3>
+                <hr>
+                <h4 class="font-weight-lighter"> Total Question attempted {{test.result.number_of_questions_attempted}}
+                </h4>
+                <hr>    
+                <h4 class="font-weight-lighter"> Total marks gained {{test.result.gained_marks}}
+                </h4>    
+            </span>
+        </div>
+    </div>
+    
+    
+</div>
+
+{% endblock %}
+

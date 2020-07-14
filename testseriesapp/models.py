@@ -41,14 +41,15 @@ class TestSeriesParticipents(models.Model):
 
 
 class Test(models.Model):
+    participents = models.ManyToManyField(Participent,related_name="participents",null=True,blank=True)
     test_series = models.ForeignKey(TestSeries,on_delete=models.CASCADE)
     test_name = models.CharField(max_length = 100)
     test_duration = models.DurationField(default='00:05:00',null=True,blank=True)
     test_max_marks = models.IntegerField(null=True,blank=True)
     number_of_questions = models.IntegerField(null=True ,blank=False)
+    completed = models.BooleanField(default=False)
     def __str__(self):
         return self.test_name  
-
     
 
 class Question(models.Model):
@@ -56,7 +57,8 @@ class Question(models.Model):
     question_text = models.CharField(max_length = 100)
     question_image = models.ImageField(null=True,blank= True)
     right_choice = models.CharField(max_length= 100,null=True,blank = True)
-
+    choosen_choice = models.CharField(max_length= 1,null=True,blank = True)
+    max_marks = models.PositiveIntegerField(null=True,blank=True)
     def __str__(self):
         return self.question_text
 
@@ -70,11 +72,11 @@ class Choice(models.Model):
         self.choosen_choice  = value
 
 class Result(models.Model):
-    test = models.ForeignKey(Test,on_delete=models.CASCADE)
+    test = models.OneToOneField(Test,on_delete=models.CASCADE)
     number_of_questions_attempted = models.IntegerField(null=True,blank=True)
-    gained_marks = models.IntegerField()
-    minus_marks = models.IntegerField()
-    rank = models.IntegerField()
-    taken_time  = models.IntegerField()
+    gained_marks = models.IntegerField(null=True,blank=True)
+    minus_marks = models.IntegerField(null=True,blank=True)
+    rank = models.IntegerField(null=True,blank=True)
+    taken_time  = models.IntegerField(null=True,blank=True)
 
     
