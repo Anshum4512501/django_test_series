@@ -9,29 +9,33 @@ from django.utils import timezone
 class Participent(models.Model):
     participent = models.OneToOneField(User,on_delete=models.CASCADE)
     participent_name = models.CharField(max_length = 100 )
-    participent_joining_date = models.DateTimeField(auto_now=False)
-
+    
     def __str__(self):
         return str(self.participent)
 
 class TestSeries(models.Model):
-    
-    participent = models.ManyToManyField(Participent,related_name='paricipent_set',null=True,blank=True)
+    participent = models.ManyToManyField(Participent,through="TestSeriesParticipents")
     test_series_name = models.CharField(max_length=100)
     test_series_description = models.TextField(null=True,blank=True)
     number_of_tests = models.IntegerField()
     price = models.FloatField()
-    test_series_joined = models.BooleanField(default=None)
-    test_series_joining_date = models.DateTimeField(auto_now=False,null=True ,blank=True)
-   
+    
     def __str__(self):
         return self.test_series_name
 
+    
+class TestSeriesParticipents(models.Model):
+    participent = models.ForeignKey(Participent,on_delete=models.CASCADE)
+    testseries = models.ForeignKey(TestSeries,on_delete= models.CASCADE)
+    participent_joining_date = models.DateTimeField(auto_now_add=False,null=True,blank=True)
+    test_series_joined = models.BooleanField(default=None,null=True ,blank=True)
+    test_series_joining_date = models.DateTimeField(auto_now_add=False,null=True ,blank=True)
+    
     def join_test_series(self,request):
         if self.test_series_joined is None:
             print("I m inside model")
             self.test_series_joined = True
-            self.participent.add(request.user)
+            self.participent = request.user
             self.test_series_joining_date = timezone.now()
             print(self.values())    
 
@@ -59,11 +63,11 @@ class Question(models.Model):
 class Choice(models.Model):
     question = models.ForeignKey(Question,on_delete=models.CASCADE)
     choice_text = models.CharField(max_length= 100)
-    choosen_choice = models.BooleanField(null=True,blank=True)
+    choosen_choice = models.CharField(max_length=1,null=True,blank=True)
     # choosen_option = models.
 
-    def choosen_choice_by_participent(self):
-        self.choosen_choice  = True
+    def choosen_choice_by_participent(self,value):
+        self.choosen_choice  = value
 
 class Result(models.Model):
     test = models.ForeignKey(Test,on_delete=models.CASCADE)

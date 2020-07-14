@@ -14,7 +14,16 @@
             <p class="mt-3">{{test.test_series_description}}</p>
             <p class="mt-3">{{test.number_of_tests}}</p>
             <p class="mt-3">Rus. {{test.price}}</p>
-            <a class="btn btn-success p-2 rounded-0 mt-1" href="{% url 'testseriesapp:join-now' test.id %}">Join now</a>
+            <p class="mt-3">Joined? {{test.test_series_joined}}</p>
+            
+            {% if test.test_series_joined %}
+            <a class="btn btn-success p-2 rounded-0 mt-1"  href="{% url 'testseriesapp:join-now' test.id %}" disabled>Join now</a>
+            <!-- <a class="btn btn-success p-2 rounded-0 mt-1" href="{% url 'testseriesapp:test-series-details' test.id %}">Appear</a> -->
+            <a class="btn btn-success p-2 rounded-0 mt-1" href="{% url 'testseriesapp:test-series-details' pk=test.id %}">View</a>
+            
+            {%else%}
+            <a class="btn btn-success p-2 rounded-0 mt-1"  href="{% url 'testseriesapp:join-now' test.id %}" >Join now</a>
+            {%endif%}
             
         </div>
         {% endfor %}
